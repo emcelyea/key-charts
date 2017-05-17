@@ -1,1 +1,0 @@
-var flowchart = require('./flowchart');
