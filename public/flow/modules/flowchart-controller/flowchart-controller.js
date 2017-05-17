@@ -16,7 +16,8 @@ FlowchartController.prototype.initialize = function(container, name, chartId){
 			//handle already created charts
 		}else{
 			this.flowchart = new Flowchart();
-			this.flowchart.create(name).then( (nodesCreated) => {
+			//this.flowchart.create(name).then( (nodesCreated) => {
+				this.flowchart.create(name);
 				//setup drawer chart etc;
 				this.drawer = new FlowchartDrawer();
 				this.drawer.initialize(this.container);
@@ -30,7 +31,7 @@ FlowchartController.prototype.initialize = function(container, name, chartId){
 					this.drawer.setSelectedStateDisplay(this.flowchart.nodes, this.selected, this.state);		
 				});
 
-			});
+			//});
 		}
 	}else{
 		console.error(controllerError, 'constructor missing container param');

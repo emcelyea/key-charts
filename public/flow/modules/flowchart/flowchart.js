@@ -13,7 +13,7 @@ Flowchart.nodeTypes = ['terminal', 'process', 'decision'];
 
 Flowchart.prototype.create = function(name){
 	if(name || this.name){
-		return HttpUtil.post('/api/flowchart', {name:name||this.name}).then((success) =>{
+		/*return HttpUtil.post('/api/flowchart', {name:name||this.name}).then((success) =>{
 			//setup fields
 			this._id 	= success._id;
 			this.name = success.name;
@@ -25,10 +25,22 @@ Flowchart.prototype.create = function(name){
 				this.nodes = [];
 				this.nodes.push(newNode);
 
-			});
-		}, (err) => {
-			console.error(flowchartError, ' return from server, ', err)
-		});
+			});*/
+			this._id = '123saasdf';
+			this.name = name;
+
+			var newNode = new Node();
+			newNode.create({type:'terminal', positionX:0, positionY:0, flowchart:this._id});
+			//return newNode.create({type:'terminal', positionX:0, positionY:0, flowchart:this._id}).then( () => {
+
+				this.nodes = [];
+				this.nodes.push(newNode);
+
+			//});
+
+		///}, (err) => {
+			//console.error(flowchartError, ' return from server, ', err)
+		//});
 	}else{
 		console.error(flowchartError, ' create type invalid');
 	}

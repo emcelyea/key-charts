@@ -16,12 +16,13 @@ Node.prototype.create = function(node){
 	this.positionX = node.positionX;
 	this.positionY = node.positionY;
 	if(!err){
-		return HttpUtil.post('/api/node', node).then((success) =>{
+		/*return HttpUtil.post('/api/node', node).then((success) =>{
 			this._id 	= success._id;
 		}, (err) =>{
 			console.error(nodeError, ' create node return from server, ', err);
 			Node.prototype.recoverFromError('create', node);
-		});
+		});*/
+		this._id = Math.random().toString();
 	}else{
 		console.error(nodeError, ' creating new node:', err);
 	}

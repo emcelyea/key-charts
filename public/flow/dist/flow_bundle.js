@@ -13,21 +13,31 @@ Flowchart.nodeTypes = ['terminal', 'process', 'decision'];
 
 Flowchart.prototype.create = function (name) {
 	if (name || this.name) {
-		return HttpUtil.post('/api/flowchart', { name: name || this.name }).then(success => {
-			//setup fields
-			this._id = success._id;
-			this.name = success.name;
+		/*return HttpUtil.post('/api/flowchart', {name:name||this.name}).then((success) =>{
+  	//setup fields
+  	this._id 	= success._id;
+  	this.name = success.name;
+  		//create entry node
+  	var newNode = new Node();
+  	return newNode.create({type:'terminal', positionX:0, positionY:0, flowchart:this._id}).then( () => {
+  			this.nodes = [];
+  		this.nodes.push(newNode);
+  		});*/
+		this._id = '123saasdf';
+		this.name = name;
 
-			//create entry node
-			var newNode = new Node();
-			return newNode.create({ type: 'terminal', positionX: 0, positionY: 0, flowchart: this._id }).then(() => {
+		var newNode = new Node();
+		newNode.create({ type: 'terminal', positionX: 0, positionY: 0, flowchart: this._id });
+		//return newNode.create({type:'terminal', positionX:0, positionY:0, flowchart:this._id}).then( () => {
 
-				this.nodes = [];
-				this.nodes.push(newNode);
-			});
-		}, err => {
-			console.error(flowchartError, ' return from server, ', err);
-		});
+		this.nodes = [];
+		this.nodes.push(newNode);
+
+		//});
+
+		///}, (err) => {
+		//console.error(flowchartError, ' return from server, ', err)
+		//});
 	} else {
 		console.error(flowchartError, ' create type invalid');
 	}
@@ -128,20 +138,22 @@ FlowchartController.prototype.initialize = function (container, name, chartId) {
 			//handle already created charts
 		} else {
 			this.flowchart = new Flowchart();
-			this.flowchart.create(name).then(nodesCreated => {
-				//setup drawer chart etc;
-				this.drawer = new FlowchartDrawer();
+			//this.flowchart.create(name).then( (nodesCreated) => {
+			this.flowchart.create(name);
+			//setup drawer chart etc;
+			this.drawer = new FlowchartDrawer();
+			this.drawer.initialize(this.container);
+			this.drawer.drawChart(this.flowchart.nodes);
+			this.drawer.setSelectedStateDisplay(this.flowchart.nodes, this.selected, this.state);
+			this.setupListeners();
+
+			window.addEventListener('optimizedResize', () => {
 				this.drawer.initialize(this.container);
 				this.drawer.drawChart(this.flowchart.nodes);
 				this.drawer.setSelectedStateDisplay(this.flowchart.nodes, this.selected, this.state);
-				this.setupListeners();
-
-				window.addEventListener('optimizedResize', () => {
-					this.drawer.initialize(this.container);
-					this.drawer.drawChart(this.flowchart.nodes);
-					this.drawer.setSelectedStateDisplay(this.flowchart.nodes, this.selected, this.state);
-				});
 			});
+
+			//});
 		}
 	} else {
 		console.error(controllerError, 'constructor missing container param');
@@ -276,75 +288,6 @@ FlowchartController.prototype.toggleStateInputHandler = function (evt) {
 			this.drawer.setSelectedNodeType(this.flowchart.nodes, this.selected, 'back');
 			break;
 	}
-};
-'use strict';
-
-var nodeError = "Node Class Error:";
-
-var Node = function (nodelist, type) {
-	if (nodelist && type) {
-		this.create(type);
-	}
-};
-
-Node.potentialTypes = ['terminal', 'process', 'decision', 'line-horizontal', 'line-vertical'];
-
-Node.prototype.create = function (node) {
-	var err = Node.preSaveValidation(node);
-	this.type = node.type;
-	this.positionX = node.positionX;
-	this.positionY = node.positionY;
-	if (!err) {
-		return HttpUtil.post('/api/node', node).then(success => {
-			this._id = success._id;
-		}, err => {
-			console.error(nodeError, ' create node return from server, ', err);
-			Node.prototype.recoverFromError('create', node);
-		});
-	} else {
-		console.error(nodeError, ' creating new node:', err);
-	}
-};
-
-Node.prototype.update = function () {
-	if (this._id) {
-		return HttpUtil.put('/api/node/' + this._id, { type: this.type, content: this.content, positionX: this.positionX, positionY: this.positionY }).then(success => {}, err => {
-			console.error(nodeError, ' update node return from server ', err);
-		});
-	} else {
-		console.error(nodeError, ' cannot update node without _id');
-	}
-};
-
-Node.prototype.delete = function () {
-	if (this._id) {
-		return HttpUtil.delete('/api/node/' + this._id).then(success => {
-			this._id = null;
-			this.positionX = null;
-			this.positionY = null;
-		}, err => {
-			console.error(nodeError, ' delete node return from server, ', err);
-		});
-	} else {
-		console.error(nodeError, ' cannot delete node without _id');
-	}
-};
-
-Node.prototype.recoverFromError = function (request, data) {};
-
-Node.preSaveValidation = function (node) {
-	var errs = '';
-	var cpNode = {};
-	if (!node.type || Node.potentialTypes.indexOf(node.type) === -1) {
-		errs += '"type" field invalid: ' + node.type;
-	} else if (!Number.isInteger(node.positionX)) {
-		errs += '"positionX" field invalid ' + node.positionX;
-	} else if (!Number.isInteger(node.positionY)) {
-		errs += '"positionY" field invalid ' + node.positionY;
-	} else if (!node.flowchart) {
-		errs += '"flowchart" field invalid ' + node.flowchart;
-	}
-	return errs;
 };
 /*Flowchart Drawer, has knowledge of entire draw field:
 	uses that to calculate x/y/width/height nodes/text should be drawn at
@@ -551,6 +494,76 @@ function getNodeType(node, move) {
 	}
 	return Flowchart.nodeTypes[current];
 }
+'use strict';
+
+var nodeError = "Node Class Error:";
+
+var Node = function (nodelist, type) {
+	if (nodelist && type) {
+		this.create(type);
+	}
+};
+
+Node.potentialTypes = ['terminal', 'process', 'decision', 'line-horizontal', 'line-vertical'];
+
+Node.prototype.create = function (node) {
+	var err = Node.preSaveValidation(node);
+	this.type = node.type;
+	this.positionX = node.positionX;
+	this.positionY = node.positionY;
+	if (!err) {
+		/*return HttpUtil.post('/api/node', node).then((success) =>{
+  	this._id 	= success._id;
+  }, (err) =>{
+  	console.error(nodeError, ' create node return from server, ', err);
+  	Node.prototype.recoverFromError('create', node);
+  });*/
+		this._id = Math.random().toString();
+	} else {
+		console.error(nodeError, ' creating new node:', err);
+	}
+};
+
+Node.prototype.update = function () {
+	if (this._id) {
+		return HttpUtil.put('/api/node/' + this._id, { type: this.type, content: this.content, positionX: this.positionX, positionY: this.positionY }).then(success => {}, err => {
+			console.error(nodeError, ' update node return from server ', err);
+		});
+	} else {
+		console.error(nodeError, ' cannot update node without _id');
+	}
+};
+
+Node.prototype.delete = function () {
+	if (this._id) {
+		return HttpUtil.delete('/api/node/' + this._id).then(success => {
+			this._id = null;
+			this.positionX = null;
+			this.positionY = null;
+		}, err => {
+			console.error(nodeError, ' delete node return from server, ', err);
+		});
+	} else {
+		console.error(nodeError, ' cannot delete node without _id');
+	}
+};
+
+Node.prototype.recoverFromError = function (request, data) {};
+
+Node.preSaveValidation = function (node) {
+	var errs = '';
+	var cpNode = {};
+	if (!node.type || Node.potentialTypes.indexOf(node.type) === -1) {
+		errs += '"type" field invalid: ' + node.type;
+	} else if (!Number.isInteger(node.positionX)) {
+		errs += '"positionX" field invalid ' + node.positionX;
+	} else if (!Number.isInteger(node.positionY)) {
+		errs += '"positionY" field invalid ' + node.positionY;
+	} else if (!node.flowchart) {
+		errs += '"flowchart" field invalid ' + node.flowchart;
+	}
+	return errs;
+};
 
 
 var nodeDrawerError = 'NodeDrawer Error : ';
