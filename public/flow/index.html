@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Flowchart</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+		<style>
+		body {
+		  padding-top: 50px;
+		}
+
+		h1 {
+		  margin-bottom: 20px;
+		  padding-bottom: 9px;
+		  border-bottom: 1px solid #eee;
+		}
+
+		.sidebar {
+		  position: fixed;
+		  top: 51px;
+		  bottom: 0;
+		  left: 0;
+		  z-index: 1000;
+		  padding: 20px;
+		  overflow-x: hidden;
+		  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+		  border-right: 1px solid #eee;
+		}
+		.sidebar {
+		  padding-left: 0;
+		  padding-right: 0;
+		}
+		.sidebar .nav {
+		  margin-bottom: 20px;
+		}
+
+		.sidebar .nav-item {
+		  width: 100%;
+		}
+
+		.sidebar .nav-item + .nav-item {
+		  margin-left: 0;
+		}
+
+		.sidebar .nav-link {
+		  border-radius: 0;
+		}
+		.chart-area{
+			border:1px solid #0275d8;
+			min-height:50px;
+		}
+@-webkit-keyframes pulseBlack {
+  25% { stroke: #000; }  
+}
+
+@-moz-keyframes pulseBlack {
+  25% { stroke: #000; }  
+}
+
+@-o-keyframes pulseBlack {
+  25% { stroke: #000; }
+}
+
+@keyframes pulseBlack { 
+  25% { stroke: #000; }
+}
+.pulse-element-black {
+    transition: stroke 2s;
+    -webkit-animation: pulseBlack 1s infinite; /* Safari 4+ */
+    -moz-animation:    pulseBlack 1s infinite; /* Fx 5+ */
+    -o-animation:      pulseBlack 1s infinite; /* Opera 12+ */
+    animation:         pulseBlack 1s infinite; /* IE 10+, Fx 29+ */
+ }
+@-webkit-keyframes pulseWhite {
+  25% { stroke: #fff; }  
+}
+
+@-moz-keyframes pulseWhite {
+  25% { stroke: #fff; }  
+}
+
+@-o-keyframes pulseWhite {
+  25% { stroke: #fff; }
+}
+
+@keyframes pulseWhite { 
+  25% { stroke: #fff; }
+}
+.pulse-element-white {
+    transition: stroke 2s;
+    -webkit-animation: pulseWhite 1s infinite; /* Safari 4+ */
+    -moz-animation:    pulseWhite 1s infinite; /* Fx 5+ */
+    -o-animation:      pulseWhite 1s infinite; /* Opera 12+ */
+    animation:         pulseWhite 1s infinite; /* IE 10+, Fx 29+ */
+  }
+	</style>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+      <button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="#">Even flowww</a>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item ">
+            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/flow">Flowcharts</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/gantt">Gantt Charts</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
+          <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" href="">Create</a>
+            </li>
+          </ul>
+        </nav>
+
+        <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
+          <h3>Create Flow Chart</h3>
+          <div class="col-sm-6 offset-sm-3">
+        	  <hr>
+        	</div>
+          <section class="row">
+          	<div class="col-sm-6">
+							<div class="input-group">
+							  <span class="input-group-addon" id="basic-addon1">Chart Title</span>
+							  <input type="text" id="name-input" class="form-control" placeholder="Title" aria-describedby="basic-addon1">
+					      <span class="input-group-btn">
+					        <button class="btn btn-secondary" type="button" id="save-title-button">Save</button>
+					      </span>					
+							</div>
+						</div>
+          </section>
+          <section class="row" style="margin-top:20px;">
+          	<div class="col-sm-6">
+          		<h3 id="chart-name"></h3>
+          	</div>
+          </section>
+					<section class="row">
+						<div class="col-sm-12">
+							<div id="chart-div" tabindex="1"></div>
+						</div>
+					</section>
+          
+        </main>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+
+
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+		<script type="text/javascript" src="/flow/dist/flow_bundle.js"></script>
+			
+	</body>
+</html>

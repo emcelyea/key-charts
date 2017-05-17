@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Even Flowcharts</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-light_blue.min.css">
+	<link rel="stylesheet" href="/css/gantt-page.css">
+
+</head>
+<body>
+  	<div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+  		
+  		<!-- PAGE HEADER -->
+      	<header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
+        	<div class="mdl-layout__header-row">
+          		<span class="mdl-layout-title" id="page-header">New Chart</span>
+          		<div class="mdl-layout-spacer"></div>
+        	</div>
+      	</header>
+
+      	<!-- SIDEBAR -->
+      	<div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
+	        <header class="demo-drawer-header">
+	          	<div class="demo-avatar-dropdown">
+	            	<span>Username</span>
+	            	<div class="mdl-layout-spacer"></div>
+	            	<button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+	              		<i class="material-icons" role="presentation">arrow_drop_down</i>
+	              		<span class="visuallyhidden">Accounts</span>
+	            	</button>
+	            	<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
+	              		<li class="mdl-menu__item">hello@example.com</li>
+	              		<li class="mdl-menu__item">info@example.com</li>
+	              		<li class="mdl-menu__item"><i class="material-icons">add</i>Add another account...</li>
+	            	</ul>
+	          	</div>
+	        </header>
+	        <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
+	         	<a class="mdl-navigation__link" ><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>New Chart</a>
+	          	<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Search Charts</a>
+	          	<div class="mdl-layout-spacer"></div>
+	          	<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>
+	        </nav>
+      	</div>
+      	
+      	<!-- PAGE CONTENT -->
+      	<main class="mdl-layout__content mdl-color--grey-100">
+        	<div class="mdl-grid demo-content">
+
+        		<!-- title view -->
+        		<div class="" id="title-view">
+        			<h4>Chart Title</h4>
+        			<input type="text" id="title-input">
+        			<button id="title-create-button">Create</button>
+        		</div>
+
+        		<!-- create vew -->
+        		<div class="container" id="create-view" style="display:block;">
+        			<div class="mdl-grid">
+        				<div class="mdl-cell mdl-cell--6-col">
+        					<h4 id="chart-title-display"></h4>
+        				</div>
+        			</div>
+        			<div class="mdl-grid">
+        				<div class="mdl-cell mdl-cell--12-col">
+		        			<div id="new-gantt-chart">
+		        			</div>
+		        		</div>
+		        	</div>
+        		</div>
+
+        	</div>
+      	</main>
+
+    </div>
+    
+	<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+	<script src="/gantt/dist/gantt_bundle.js"></script>
+</body>
+</html>
